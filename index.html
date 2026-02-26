@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flutter モバイル開発調査報告</title>
+  <script src="https://cdn.jsdelivr.net/npm/marked@14.1.4/marked.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dompurify@3.3.1/dist/purify.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans JP",
+                   "Noto Sans SC", "Helvetica Neue", Arial, sans-serif;
+      background: #f5f7fa;
+      color: #24292f;
+      line-height: 1.7;
+    }
+
+    header {
+      background: #0d1117;
+      color: #f0f6fc;
+      padding: 1.2rem 2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+    header svg { flex-shrink: 0; }
+    header h1 { font-size: 1.25rem; font-weight: 600; }
+
+    .tabs {
+      display: flex;
+      gap: 0.5rem;
+      padding: 1rem 2rem 0;
+      border-bottom: 2px solid #d0d7de;
+      background: #fff;
+    }
+    .tab {
+      padding: 0.55rem 1.4rem;
+      border: 1px solid transparent;
+      border-bottom: none;
+      border-radius: 6px 6px 0 0;
+      cursor: pointer;
+      font-size: 0.95rem;
+      font-weight: 500;
+      background: #f6f8fa;
+      color: #57606a;
+      transition: background 0.15s, color 0.15s;
+      position: relative;
+      bottom: -2px;
+    }
+    .tab:hover { background: #eaeef2; color: #24292f; }
+    .tab.active {
+      background: #fff;
+      color: #0969da;
+      border-color: #d0d7de;
+      border-bottom-color: #fff;
+    }
+
+    #content {
+      max-width: 900px;
+      margin: 2rem auto;
+      background: #fff;
+      border: 1px solid #d0d7de;
+      border-radius: 8px;
+      padding: 2.5rem 3rem;
+    }
+
+    #loading {
+      text-align: center;
+      padding: 3rem;
+      color: #57606a;
+    }
+    #error {
+      display: none;
+      color: #cf222e;
+      background: #ffebe9;
+      border: 1px solid #ffc1c0;
+      border-radius: 6px;
+      padding: 1rem 1.4rem;
+    }
+
+    /* Markdown rendering styles */
+    #content h1 { font-size: 1.9rem; border-bottom: 2px solid #d0d7de; padding-bottom: 0.4rem; margin: 0 0 1.2rem; }
+    #content h2 { font-size: 1.4rem; border-bottom: 1px solid #d0d7de; padding-bottom: 0.3rem; margin: 2rem 0 0.8rem; }
+    #content h3 { font-size: 1.15rem; margin: 1.6rem 0 0.6rem; }
+    #content h4 { font-size: 1rem; margin: 1.2rem 0 0.5rem; color: #57606a; }
+    #content p { margin: 0.7rem 0; }
+    #content ul, #content ol { padding-left: 1.8rem; margin: 0.6rem 0; }
+    #content li { margin: 0.3rem 0; }
+    #content blockquote {
+      border-left: 4px solid #0969da;
+      margin: 1rem 0;
+      padding: 0.5rem 1rem;
+      background: #f6f8fa;
+      color: #57606a;
+      border-radius: 0 4px 4px 0;
+    }
+    #content table { border-collapse: collapse; width: 100%; margin: 1rem 0; font-size: 0.9rem; }
+    #content th, #content td { border: 1px solid #d0d7de; padding: 0.5rem 0.8rem; }
+    #content th { background: #f6f8fa; font-weight: 600; }
+    #content tr:nth-child(even) td { background: #f6f8fa; }
+    #content code {
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+      font-size: 0.87em;
+      background: #f6f8fa;
+      border: 1px solid #d0d7de;
+      border-radius: 4px;
+      padding: 0.15em 0.4em;
+    }
+    #content pre {
+      background: #f6f8fa;
+      border: 1px solid #d0d7de;
+      border-radius: 6px;
+      padding: 1rem 1.2rem;
+      overflow-x: auto;
+      margin: 1rem 0;
+    }
+    #content pre code { background: none; border: none; padding: 0; font-size: 0.88rem; }
+    #content hr { border: none; border-top: 2px solid #d0d7de; margin: 1.5rem 0; }
+    #content strong { font-weight: 700; }
+    #content a { color: #0969da; }
+    #content a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+
+<header>
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"
+          fill="#58a6ff"/>
+  </svg>
+  <h1>Flutter モバイル開発調査報告 / Flutter移动端开发调查报告</h1>
+</header>
+
+<div class="tabs">
+  <button class="tab active" id="tab-ja" onclick="showDoc('ja')">🇯🇵 日本語</button>
+  <button class="tab" id="tab-zh" onclick="showDoc('zh')">🇨🇳 中文</button>
+</div>
+
+<div id="content">
+  <p id="loading">読み込み中... / 加载中...</p>
+  <p id="error"></p>
+  <div id="md-output"></div>
+</div>
+
+<script>
+  const docs = {
+    ja: 'Flutter%E8%AA%BF%E6%9F%BB%E5%A0%B1%E5%91%8A%E6%9B%B8.md',
+    zh: 'Flutter%E8%B0%83%E6%9F%A5%E6%8A%A5%E5%91%8A.md'
+  };
+
+  let currentLang = null;
+  const loaded = {};
+
+  async function showDoc(lang) {
+    if (lang === currentLang) return;
+    currentLang = lang;
+
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('tab-' + lang).classList.add('active');
+
+    if (loaded[lang]) {
+      document.getElementById('md-output').innerHTML = loaded[lang];
+      return;
+    }
+
+    const loading = document.getElementById('loading');
+    const error = document.getElementById('error');
+    const output = document.getElementById('md-output');
+
+    loading.style.display = 'block';
+    error.style.display = 'none';
+    output.innerHTML = '';
+
+    try {
+      const res = await fetch(docs[lang]);
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const text = await res.text();
+      const html = DOMPurify.sanitize(marked.parse(text));
+      loaded[lang] = html;
+      output.innerHTML = html;
+    } catch (e) {
+      error.textContent = 'ドキュメントの読み込みに失敗しました / 文档加载失败: ' + e.message;
+      error.style.display = 'block';
+    } finally {
+      loading.style.display = 'none';
+    }
+  }
+
+  showDoc('ja');
+</script>
+</body>
+</html>
