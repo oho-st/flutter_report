@@ -1,0 +1,32 @@
+
+0.環境構築
+Homebrew(Commend)
+git
+VSCode
+	Flutter
+		Dart SDK
+iTerm2(optional)
+Chrome
+Memo: flutter doctor -v
+
+0.1 iOS
+	Xcode
+		platform - iPhone
+0.2 Android
+	JDK
+		set path
+	Android Studio
+		settings - Android SDK - SDK Tools - Android	SDK Command-line Tools
+			set path
+		plugin - Flutter,Dart
+
+1. Dart - basic doc (2~3d)
+2. Dart - learn by demo(1d)Start learning
+3. Flutter - learn by demo(1d)https://docs.flutter.dev/learn/pathway/tutorial
+4. Flutter -doc(2w+)
+
+
+TODO:
+- [ ] 
+- [x] Coding rule.
+https://dart.cn/effective-dart/design#types
